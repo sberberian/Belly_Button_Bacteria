@@ -61,15 +61,22 @@ function buildCharts(sample) {
   var samples = data.samples;
     // 4. Create a variable that filters the samples for the object with the desired sample number.
   var filteredArray = samples.filter(sampObj => sampObj.id == sample);
+    // (Gauge chart 1.) Create a variable that filters the metadata array for the object with the desired sample number.
+  var metadata = data.metadata;
+  var metaSample = metadata.filter(sampleObj => sampleObj.id == sample);
     //  5. Create a variable that holds the first sample in the array.
   var firstSample = filteredArray[0];
+    // (Gauge chart 2.) Create a variable that holds the first sample in the metadata array.
+  var firstMetasamp = metaSample[0];
     // 6. Create variables that hold the otu_ids, otu_labels, and sample_values.
   var otuIds = firstSample.otu_ids
   var otuLabels = firstSample.otu_labels
   var sampleValues = firstSample.sample_values
 
   // (Gauge Chart 3.) Create a variable that holds the washing frequency.
-  var washFreq = firstMetasamp.washFreq
+  var washFrequency = firstMetasamp.washFreq
+
+    
     // 7. Create the yticks for the bar chart.
     // Hint: Get the the top 10 otu_ids and map them in descending order  
     //  so the otu_ids with the most bacteria are last. 
@@ -107,7 +114,6 @@ function buildCharts(sample) {
   };
 
   var bubbleData = [trace2];
-  console.log(bubbleData)
 
   // 2. Create the layout for the bubble chart.
   var bubbleLayout = {
@@ -127,20 +133,22 @@ function buildCharts(sample) {
 
   // 4. Create the trace for the gauge chart.
   var gaugeData = [
-    value: washFreq,
-    type: "indicator",
-    mode: "gauge+number",
-    title: { text: "Belly Button Washing Frequency" },
-    gauge: {
-      axis: { range: [null, 10]},
-      bar: { color: "black" },
-      steps: [
-        { range: [0, 2], color: "red" },
-        { range: [2, 4], color: "orange" },
-        { range: [4, 6], color: "yellow" },
-        { range: [6, 8], color: "yellowgreen" },
-        { range: [8, 10], color: "green" }
-      ]
+    {
+      value: washFrequency,
+      type: "indicator",
+      mode: "gauge+number",
+      title: { text: "Belly Button Washing Frequency" },
+      gauge: {
+        axis: { range: [null, 10]},
+        bar: { color: "black" },
+        steps: [
+          { range: [0, 2], color: "red" },
+          { range: [2, 4], color: "orange" },
+          { range: [4, 6], color: "yellow" },
+          { range: [6, 8], color: "yellowgreen" },
+          { range: [8, 10], color: "green" }
+        ]
+      }
     }
   ];
       
@@ -155,3 +163,5 @@ function buildCharts(sample) {
   Plotly.newPlot("gauge", gaugeData, gaugeLayout);
 
 });
+
+}
